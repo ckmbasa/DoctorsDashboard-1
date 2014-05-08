@@ -91,6 +91,7 @@ public class RegisterActivity extends Activity {
 		base_url = et_base_url.getText().toString();
 	}
 	
+		
 	/* Validate each input of user in case or missing fields and etc.*/
 	public void validateInputs(){
 		

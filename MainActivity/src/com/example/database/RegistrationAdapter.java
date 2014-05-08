@@ -41,6 +41,15 @@ public class RegistrationAdapter extends Data{
 		}
 	}
 	
+	public void setClientId(String client_id){
+		db = dbHandler.getWritableDatabase();
+		String query = 
+			"INSERT into " + TABLE_CLIENT + " (client_id) VALUES (" + client_id + ")";
+		
+		System.out.println("insert client");
+		db.execSQL(query);
+	}
+	
 	public String getClientId(){
 		//Add code for query getting number of accounts in mobile DB
 		db = dbHandler.getWritableDatabase();
@@ -50,4 +59,6 @@ public class RegistrationAdapter extends Data{
 		System.out.println(cursor.getString(0));
 		return cursor.getString(0);
 	}
+	
+	
 }
