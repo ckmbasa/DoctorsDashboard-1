@@ -70,6 +70,7 @@ public class RegisterActivity extends Activity {
 		/* Retrieve client_id from mobile DB */
 		reg.setClientId(getClientId());
 		
+		System.out.println(getClientId());
 		//finish();
 	}
 	/* Retrieves inputted text by user and assigns it to a variable */
@@ -142,10 +143,9 @@ public class RegisterActivity extends Activity {
 	
 	/* Retrieves client_id of mobile device and returns it as string */
 	private String getClientId(){
-		//RegistrationAdapter db = new RegistrationAdapter(this);
+		RegistrationAdapter db = new RegistrationAdapter(this);
 		System.out.println("getClientId");
-		return "client_id";
-		//return db.getClientId().toString();
+		return db.getClientId().toString();
 	}
 	
 	

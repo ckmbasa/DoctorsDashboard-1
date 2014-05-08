@@ -1,8 +1,8 @@
 /*
  ** Created by Alvin Jay Cosare
- ** Created on 05/07/14
+ ** Created on 05/08/14
  ** This class handles all database processes (SELECT,POST,UPDATE,DELETE)
- *  related to Registration process
+ *  related to Client ID generation process
  */
 
 package com.example.database;
@@ -22,7 +22,7 @@ import android.util.Log;
 
 import com.example.database.Data;
 
-public class RegistrationAdapter extends Data{
+public class ClientAdapter extends Data{
 	
 	
 	public  SQLiteDatabase db;
@@ -31,7 +31,7 @@ public class RegistrationAdapter extends Data{
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";
 	//
-	public  RegistrationAdapter(Context context) 
+	public  ClientAdapter(Context context) 
 	{
 		try {
 			dbHandler = new DatabaseHandler(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,13 +41,34 @@ public class RegistrationAdapter extends Data{
 		}
 	}
 	
-	public String getClientId(){
-		//Add code for query getting number of accounts in mobile DB
+	/* Checks if a client_id already exists */
+	public boolean clientIdExists(){
+	
 		db = dbHandler.getWritableDatabase();
 		String query = 
-			"SELECT " + CLIENT_ID +" FROM " + TABLE_CLIENT + " WHERE id = 0";
+				"SELECT " + CLIENT_ID + 
+			    " FROM " + TABLE_CLIENT + 
+				" WHERE id = 1"; 
+		
 		Cursor cursor = db.rawQuery(query, null);
-		System.out.println(cursor.getString(0));
-		return cursor.getString(0);
+		if(cursor.moveToFirst()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	/*  generated client_id to mobile DB */
+	public void insertClientId(String client_id){
+		System.out.println("inserting");
+		db = dbHandler.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		
+		values.put(CLIENT_ID, client_id);
+		
+		db.insert(TABLE_CLIENT, null, values);
+		db.close();
 	}
 }

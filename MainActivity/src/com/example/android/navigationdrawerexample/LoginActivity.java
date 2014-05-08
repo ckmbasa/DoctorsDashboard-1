@@ -1,5 +1,7 @@
 package com.example.android.navigationdrawerexample;
 
+import java.util.UUID;
+
 import com.example.database.*;
 
 import android.animation.Animator;
@@ -58,6 +60,12 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		if(!checkClientId()){
+			String client_id = generateClientId();
+			saveClientId(client_id);
+			System.out.println("Client ID = " + client_id);
+		}
+		
 		/*
 		 *  Check if at least one account already exists 
 		 *  If no existing accounts then proceed to Registration
@@ -104,6 +112,35 @@ public class LoginActivity extends Activity {
 				});
 	}
 	
+	/* Checks if a client_id already exists */
+	private boolean checkClientId(){
+		
+		ClientAdapter db = new ClientAdapter(this);
+		
+		if(db.clientIdExists()){
+			return true;
+		} 
+		else{
+			return false;
+		}
+	}
+	
+	/* Generates client_id */
+	private String generateClientId(){ 
+		
+		System.out.println("uuid");
+		return UUID.randomUUID().toString();
+		
+	}
+	
+	/* Saves generated client_id to mobile DB */
+	private void saveClientId(String client_id){
+		
+		ClientAdapter db = new ClientAdapter(this);
+		
+		db.insertClientId(client_id);
+		
+	}
 	/* Checks if at least one account exists */
 	private boolean accountExists(){
 		AccountsAdapter db = new AccountsAdapter(this);
