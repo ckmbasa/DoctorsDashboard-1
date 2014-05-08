@@ -43,7 +43,6 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		getActionBar().setDisplayHomeAsUpEnabled(false);
-		
 	}
 	
 	public void prepareCredentials(View view){
@@ -57,8 +56,6 @@ public class RegisterActivity extends Activity {
 		
 		/* Validate inputs from user (i.e. empty field, unequal passwords) */
 		validateInputs();
-		
-		/* FOR THE MEAN TIME */
 
 		Registration reg = new Registration();
 

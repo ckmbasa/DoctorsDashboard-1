@@ -46,6 +46,6 @@ public class AccountsAdapter extends Data{
 	public int getAccounts(){
 		//Add code here for query getting number of accounts in mobile DB
 		
-		return 0; //Assume that database is empty
+		return 1; //Assume that database is empty
 	}
 }
