@@ -126,7 +126,7 @@ public class Data {
 	//	-----Table Creation Statements--------------
 	 static final String CREATE_TABLE_CLIENT = 
 		"CREATE TABLE " + TABLE_CLIENT + " ( " +
-		ID + " INTEGER PRIMARY KEY DEFAULT 0 , " +
+		ID + " INTEGER PRIMARY KEY DEFAULT 1 , " +
 		CLIENT_ID + " TEXT UNIQUE" + " ) ";
 	
 	 static final String CREATE_TABLE_DEPARTMENT = 
