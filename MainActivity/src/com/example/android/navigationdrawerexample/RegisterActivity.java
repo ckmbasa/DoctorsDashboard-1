@@ -37,13 +37,17 @@ import com.google.resting.component.impl.BasicRequestParams;
 import com.google.resting.component.impl.ServiceResponse;
 import com.google.resting.json.JSONException;
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends Activity{
 
-	private String license_nr = "0117236";
-	private String username = "seurinane";
-	private String password = "1234";
-	private String confirm_password = "1234";
-	private String base_url = "121.97.45.242";
+	private Registration reg;
+	private Rest rest;
+	
+	private String license_nr;// = "0117236";
+	private String username;// = "seurinane";
+	private String password;// = "1234";
+	private String confirm_password;// = "1234";
+	private String base_url;// = "121.97.45.242";
+	
 	private HashMap<String, String> data;
 	
 	private EditText et_license_nr;
@@ -51,6 +55,8 @@ public class RegisterActivity extends Activity {
 	private EditText et_password;
 	private EditText et_confirm_password;
 	private EditText et_base_url;	
+	
+	private View focusView;
 	
 	private Button register;
 	
@@ -61,19 +67,30 @@ public class RegisterActivity extends Activity {
 		
 		setContentView(R.layout.activity_register);
 		getActionBar().setDisplayHomeAsUpEnabled(false);
-		
 		initViews();
 	}
 	
-	public void prepareCredentials(View view){
+	/* Called when "Register" button is clicked (refer to activity_register layout) */
+	public void processRegistration(View view){
+		
+		/* if inputs are all valid, submits them thru API */
+		if(prepareCredentials()){
+			submitCredentials();
+		}
+	}
+	
+	/* Saves inputted data by user and checks if they are valid */
+	public boolean prepareCredentials(){
 		
 		/* Convert data type from EditText -> Editable -> String */ 
-		//convertInputText();
+		convertInputText();
 		
 		/* Validate inputs from user (i.e. empty field, unequal passwords) */
-		validateInputs();
-
-		Registration reg = new Registration();
+		if(!validateInputs()){
+			return false;
+		}
+		
+		reg = new Registration();
 		
 		/* Retrieve inputted data in textbox */
 		reg.setLicenseNumber(license_nr);
@@ -84,13 +101,7 @@ public class RegisterActivity extends Activity {
 		/* Retrieve client_id from mobile DB */
 		reg.setClientId(getClientId());
 		
-		
-		try{
-			submitCredentials(reg);
-		} catch(IllegalStateException e)
-		{
-			System.out.println("error");
-		}
+		return true;
 	}
 	
 	/* Associate layout elements with class variables */
@@ -114,12 +125,14 @@ public class RegisterActivity extends Activity {
 		base_url = et_base_url.getText().toString();
 	}
 	
-		
 	/* Validate each input of user in case or missing fields and etc.*/
-	public void validateInputs(){
+	public boolean validateInputs(){
 		
-		boolean cancel = false; //for flagging; will be equal to true if there are errors
-		View focusView = null; //refers to the EditText View that will be focused if there are errors
+		/* for flagging; will be equal to true if there are errors */
+		boolean cancel = false;
+		
+		/* refers to the EditText View that will be focused if there are errors */
+		focusView = null; 
 		
 		if (base_url.isEmpty()){
 			et_base_url.setError(getString(R.string.error_field_required));
@@ -154,11 +167,13 @@ public class RegisterActivity extends Activity {
 			Toast.makeText(getApplicationContext(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
 		}
 		
+		/* if there are invalid inputs, show notice */
 		if(cancel){
 			focusView.requestFocus();
+			return false;
 		}
 		else{
-			
+			return true;
 		}
 			
 	}
@@ -166,15 +181,16 @@ public class RegisterActivity extends Activity {
 	/* Retrieves client_id of mobile device and returns it as string */
 	private String getClientId(){
 		RegistrationAdapter db = new RegistrationAdapter(this);
-		System.out.println("getClientId");
+		
+		System.out.println("getting client_id..");
 		return db.getClientId().toString();
 	}
 	
 	/* Submits credentials to server via API */
-	private void submitCredentials(Registration reg){
+	private void submitCredentials(){
 		
-		Rest rest = new Rest();
-		
+		rest = new Rest();
+		/* setup API URL */
 		try {
 			rest.setURL("http://" + reg.getBaseURL() + 
 					    "/segservice/registration/doctor?" + 
@@ -187,36 +203,29 @@ public class RegisterActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		System.out.println(rest.getURL());
-		
+		/* process request service request */
 		rest.execute();
 		
-		//Toast.makeText(getApplicationContext(), rest.getResponse().getResponseString(), Toast.LENGTH_SHORT).show();
-        
+		System.out.println("processing request..");
 		
+		/* wait until data is retrieved, there is delay in retrieving data*/
 		while(rest.getContent() == null){}
 		
-		System.out.println(rest.getContent());
+		System.out.println("Data Received:\n" + rest.getContent());
 		
 		parseJSONResponse(rest.getContent());
-		//ServiceResponse response = rest.GET();
-		
-		//String content = response.getResponseString();
 		
 	} 
-	
+
+	/* Parses data in JSON format to String type */
 	private void parseJSONResponse(String content){
-		try{
-			System.out.println(content);
-		}catch(NullPointerException e){
-			System.out.println("aw");
-		}
 
 		TokenParser parser = new TokenParser(content);
+		System.out.println("Parsing data..");
 		
 		data = parser.extractData();
-			
 	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -259,6 +268,7 @@ public class RegisterActivity extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		finish();
 	}
 
 }

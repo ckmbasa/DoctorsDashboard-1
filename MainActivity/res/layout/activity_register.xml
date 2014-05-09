@@ -99,7 +99,7 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:text="@string/str_register"
-                android:onClick="prepareCredentials" />
+                android:onClick="processRegistration" />
             
             
 

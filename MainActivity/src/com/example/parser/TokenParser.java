@@ -16,16 +16,14 @@ public class TokenParser extends JSONParser {
 		try {
 			json_object = new JSONObject(content);
 			json_childNode = (JSONObject) json_object.get("data");
-			//System.out.println(json_childNode.optString("auth_token"));
 		} catch (JSONException e) {
-			System.out.println("boom");
+			System.out.println("JSON error");
 		}
 		
 	}
 	
 	public HashMap<String, String> extractData(){
-		System.out.println("ok");
-		System.out.println(json_childNode.optString("auth_token"));
+		System.out.println("saving data to HashMap..");
 		
         data.put("auth_token", json_childNode.optString("auth_token").toString());
         data.put("access_token", json_childNode.optString("access_token"));

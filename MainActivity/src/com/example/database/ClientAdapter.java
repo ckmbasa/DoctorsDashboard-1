@@ -61,7 +61,7 @@ public class ClientAdapter extends Data{
 	
 	/*  generated client_id to mobile DB */
 	public void insertClientId(String client_id){
-		System.out.println("inserting");
+		System.out.println("inserting client_id..");
 		db = dbHandler.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();

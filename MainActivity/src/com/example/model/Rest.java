@@ -69,7 +69,6 @@ public class Rest extends AsyncTask<Rest, Void, Void>{
 
 	@Override
 	protected Void doInBackground(Rest... params) {
-		System.out.println("getting..");
 		 
 		try{
 			response = Resting.get(url,port);
