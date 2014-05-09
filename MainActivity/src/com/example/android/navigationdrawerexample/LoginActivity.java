@@ -3,6 +3,7 @@ package com.example.android.navigationdrawerexample;
 import java.util.UUID;
 
 import com.example.database.*;
+import com.example.model.Registration;
 import com.example.model.TokenValidate;
 
 import android.animation.Animator;
@@ -44,72 +45,10 @@ public class LoginActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
-		
-		/* check if client_id needs to be generated */
-		if(!checkClientId()){
-			String client_id = generateClientId();
-			saveClientId(client_id);
-		}
-		
-		/*
-		 *  Check if at least one account already exists 
-		 *  If no existing accounts then proceed to Registration
-		 *  Else proceed to LogIn
-		 */
-		if(!accountExists()){
-			showRegisterActivity();
-			finish(); //temporary
-		}
-		else {
-			setContentView(R.layout.activity_login);
-			getActionBar().setDisplayHomeAsUpEnabled(false);
-			
-			//Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-			//startActivity(intent);	
-		}
-	}
-	
-	/* Checks if a client_id already exists */
-	private boolean checkClientId(){
-		
-		ClientAdapter db = new ClientAdapter(this);
-		
-		if(db.clientIdExists()){
-			return true;
-		} 
-		else{
-			return false;
-		}
-	}
-	
-	/* Generates client_id */
-	private String generateClientId(){ 
-		
-		System.out.println("uuid");
-		return UUID.randomUUID().toString();
-		
-	}
-	
-	/* Saves generated client_id to mobile DB */
-	private void saveClientId(String client_id){
-		
-		ClientAdapter db = new ClientAdapter(this);
-		
-		db.insertClientId(client_id);
-		
-	}
-	/* Checks if at least one account exists */
-	private boolean accountExists(){
-		AccountsAdapter db = new AccountsAdapter(this);
-		
-		if(db.getAccounts() > 0){
-			return true;
-		}
-		else{
-			return false;
-		}
-
+		setContentView(R.layout.activity_login);
+		getActionBar().setDisplayHomeAsUpEnabled(false);
 	}
 	
 	@Override
@@ -125,16 +64,52 @@ public class LoginActivity extends Activity {
 		startActivity(intent);
 	}
 	
-	public void showRegisterActivity(){
-		//System.out.println("register");
-		Intent intent = new Intent(this, RegisterActivity.class);
-		startActivity(intent);
+	public void successfulLogin(){
+		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(intent);	
 	}
 	
+	/* Retrieves inputted text by user and assigns it to a variable */
+	private void setInputText(){
+		et_username = (EditText) findViewById(R.id.username);
+		et_password = (EditText) findViewById(R.id.password);
+	}
+	
+	/* Retrieves inputted text by user and converts/saves it as String */
+	private void convertInputText(){
+		username = et_username.getText().toString();
+		password = et_password.getText().toString();
+	}
+	
+	
 	public void handleLogin(View view){
+		
+		setInputText();
+		
+		/* Convert data type from EditText -> Editable -> String */ 
+		convertInputText();
+		
+		/* Validate inputs from user (i.e. empty field, unequal passwords) */
+		//validateInputs();
+
+		Registration reg = new Registration();
+
+		/* Retrieve inputted data in textbox */
+		//reg.setLicenseNumber(license_nr);
+		reg.setUsername(username);
+		reg.setPassword (password);
+		
+		/* Retrieve client_id from mobile DB */
+		//reg.setClientId(getClientId());
+		
+		//System.out.println(getClientId());
+		//finish();
+
 		
 		TokenValidate token = new TokenValidate();
 		token.getAuthToken();
 		token.getAccessToken();
 	}
+	
+	
 }

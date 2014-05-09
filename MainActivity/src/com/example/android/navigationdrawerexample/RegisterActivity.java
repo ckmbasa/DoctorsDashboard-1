@@ -6,77 +6,99 @@
 
 package com.example.android.navigationdrawerexample;
 
-import com.example.database.RegistrationAdapter;
-import com.example.model.Registration;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.api.auth.MD5Hash;
+import com.example.database.RegistrationAdapter;
+import com.example.model.Registration;
+import com.example.model.Rest;
+import com.google.resting.Resting;
+import com.google.resting.component.EncodingTypes;
+import com.google.resting.component.impl.BasicRequestParams;
+import com.google.resting.component.impl.ServiceResponse;
+
 public class RegisterActivity extends Activity {
 
-	private String license_nr;
-	private String username;
-	private String password;
-	private String confirm_password;
-	private String base_url;
+	private String license_nr = "0117236";
+	private String username = "seurinane";
+	private String password = "1234";
+	private String confirm_password = "1234";
+	private String base_url = "121.97.45.242";
 	
 	private EditText et_license_nr;
 	private EditText et_username;
 	private EditText et_password;
 	private EditText et_confirm_password;
-	private EditText et_base_url;
+	private EditText et_base_url;	
+	
+	private Button register;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		System.out.println("lol");
+		
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_register);
 		getActionBar().setDisplayHomeAsUpEnabled(false);
+		
+		initViews();
 	}
 	
 	public void prepareCredentials(View view){
-		//Add code here for using API for POST credentials and retrieve actual token
-		
-		/* Set inputted text by user to variables */
-		setInputText();
 		
 		/* Convert data type from EditText -> Editable -> String */ 
-		convertInputText();
+		//convertInputText();
 		
 		/* Validate inputs from user (i.e. empty field, unequal passwords) */
 		validateInputs();
 
 		Registration reg = new Registration();
-
+		
 		/* Retrieve inputted data in textbox */
 		reg.setLicenseNumber(license_nr);
 		reg.setUsername(username);
-		reg.setPassword (password);
+		reg.setPassword(password);
+		reg.setBaseURL(base_url);
 		
 		/* Retrieve client_id from mobile DB */
 		reg.setClientId(getClientId());
 		
-		System.out.println(getClientId());
-		//finish();
+		
+		try{
+			submitCredentials(reg);
+		} catch(IllegalStateException e)
+		{
+			System.out.println("error");
+		}
 	}
-	/* Retrieves inputted text by user and assigns it to a variable */
-	private void setInputText(){
+	
+	/* Associate layout elements with class variables */
+	private void initViews(){
 		et_license_nr = (EditText) findViewById(R.id.license_number);
 		et_username = (EditText) findViewById(R.id.username);
 		et_password = (EditText) findViewById(R.id.password);
 		et_confirm_password = (EditText) findViewById(R.id.confirm_password);
 	    et_base_url = (EditText) findViewById(R.id.base_url);
+	    
+	    register = (Button)findViewById(R.id.register_button);
+	    register.requestFocus();
 	}
 	
 	/* Retrieves inputted text by user and converts/saves it as String */
@@ -131,12 +153,10 @@ public class RegisterActivity extends Activity {
 		if(cancel){
 			focusView.requestFocus();
 		}
+		else{
 			
-	}
-	
-	/* Call a web service to validate credentials and receive tokens */
-	private void submitCredentials(){
-		//Add code to implement POST API for authtoken and accesstoken generation
+		}
+			
 	}
 	
 	/* Retrieves client_id of mobile device and returns it as string */
@@ -146,6 +166,41 @@ public class RegisterActivity extends Activity {
 		return db.getClientId().toString();
 	}
 	
+	/* Submits credentials to server via API */
+	private void submitCredentials(Registration reg){
+		
+		//System.out.println(reg.getClientId());
+		//RegistrationAdapter db = new RegistrationAdapter(this);
+		/*
+		BasicRequestParams params = new BasicRequestParams();               	
+		List<Header> headers = new ArrayList<Header>();     	
+		//headers.add(new BasicHeader("Authorization","Basic " + Base64.encodeToString("emr:3mrh1s".getBytes(),Base64.NO_WRAP)));      
+		ServiceResponse response= Resting.get("http://121.97.45.242/segservice/registration/doctor?login_id=seurinane&password=81dc9bdb52d04dc20036dbd8313ed055&license_nr=0117236&client_id=1234-123123-123123-123123",80,params,EncodingTypes.UTF8,headers);
+		//Content = response.getResponseString();
+		/*if(response.getResponseString().toString()==null){
+			System.out.println("null");
+		}
+		try{
+			System.out.println(response.getResponseString().toString());
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println(MD5Hash.md5(reg.getPassword()));
+		}*/
+		
+		Rest rest = new Rest();
+		
+		//rest.setURL("http://121.97.45.242/segservice/registration/doctor?login_id=seurinane&password=81dc9bdb52d04dc20036dbd8313ed055&license_nr=0117236&client_id=1234-123123-123123-123123");
+		rest.setURL("http://" + reg.getBaseURL() + "/segservice/registration/doctor?login_id="+reg.getUsername()+"&password="+MD5Hash.md5(reg.getPassword())+"&license_nr="+reg.getLicenseNumber()+"&client_id="+reg.getClientId());
+		
+		rest.execute();
+		
+		System.out.println(rest.getURL());//, Toast.LENGTH_SHORT).show();
+		//ServiceResponse response = rest.GET();
+		
+		//String content = response.getResponseString();
+		
+		//System.out.println(content);
+	} 
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

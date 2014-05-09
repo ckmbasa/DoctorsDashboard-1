@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.android.navigationdrawerexample.LoginActivity" >
 
-    <!-- Login progress -->
 
     <LinearLayout
         android:id="@+id/login_status"
@@ -22,6 +21,7 @@
             android:fontFamily="sans-serif-light"
             android:text="@string/login_progress_signing_in"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+        
     </LinearLayout>
 
     <!-- Login form -->
@@ -47,7 +47,9 @@
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:ems="10"
-                 android:hint="@string/prompt_license" />
+                 android:hint="@string/prompt_license" 
+                 android:focusable="true"
+                 />
              
             <EditText
                 android:id="@+id/username"
