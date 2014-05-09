@@ -7,6 +7,7 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.Header;
@@ -29,10 +30,12 @@ import com.example.api.auth.MD5Hash;
 import com.example.database.RegistrationAdapter;
 import com.example.model.Registration;
 import com.example.model.Rest;
+import com.example.parser.TokenParser;
 import com.google.resting.Resting;
 import com.google.resting.component.EncodingTypes;
 import com.google.resting.component.impl.BasicRequestParams;
 import com.google.resting.component.impl.ServiceResponse;
+import com.google.resting.json.JSONException;
 
 public class RegisterActivity extends Activity {
 
@@ -41,6 +44,7 @@ public class RegisterActivity extends Activity {
 	private String password = "1234";
 	private String confirm_password = "1234";
 	private String base_url = "121.97.45.242";
+	private HashMap<String, String> data;
 	
 	private EditText et_license_nr;
 	private EditText et_username;
@@ -169,39 +173,50 @@ public class RegisterActivity extends Activity {
 	/* Submits credentials to server via API */
 	private void submitCredentials(Registration reg){
 		
-		//System.out.println(reg.getClientId());
-		//RegistrationAdapter db = new RegistrationAdapter(this);
-		/*
-		BasicRequestParams params = new BasicRequestParams();               	
-		List<Header> headers = new ArrayList<Header>();     	
-		//headers.add(new BasicHeader("Authorization","Basic " + Base64.encodeToString("emr:3mrh1s".getBytes(),Base64.NO_WRAP)));      
-		ServiceResponse response= Resting.get("http://121.97.45.242/segservice/registration/doctor?login_id=seurinane&password=81dc9bdb52d04dc20036dbd8313ed055&license_nr=0117236&client_id=1234-123123-123123-123123",80,params,EncodingTypes.UTF8,headers);
-		//Content = response.getResponseString();
-		/*if(response.getResponseString().toString()==null){
-			System.out.println("null");
-		}
-		try{
-			System.out.println(response.getResponseString().toString());
-		}catch(Exception e){
-			e.printStackTrace();
-			System.out.println(MD5Hash.md5(reg.getPassword()));
-		}*/
-		
 		Rest rest = new Rest();
 		
-		//rest.setURL("http://121.97.45.242/segservice/registration/doctor?login_id=seurinane&password=81dc9bdb52d04dc20036dbd8313ed055&license_nr=0117236&client_id=1234-123123-123123-123123");
-		rest.setURL("http://" + reg.getBaseURL() + "/segservice/registration/doctor?login_id="+reg.getUsername()+"&password="+MD5Hash.md5(reg.getPassword())+"&license_nr="+reg.getLicenseNumber()+"&client_id="+reg.getClientId());
+		try {
+			rest.setURL("http://" + reg.getBaseURL() + 
+					    "/segservice/registration/doctor?" + 
+						"login_id="+reg.getUsername()+
+						"&password="+MD5Hash.md5(reg.getPassword())+
+						"&license_nr="+reg.getLicenseNumber()+
+						"&client_id="+reg.getClientId());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(rest.getURL());
 		
 		rest.execute();
 		
-		System.out.println(rest.getURL());//, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getApplicationContext(), rest.getResponse().getResponseString(), Toast.LENGTH_SHORT).show();
+        
+		
+		while(rest.getContent() == null){}
+		
+		System.out.println(rest.getContent());
+		
+		parseJSONResponse(rest.getContent());
 		//ServiceResponse response = rest.GET();
 		
 		//String content = response.getResponseString();
 		
-		//System.out.println(content);
 	} 
 	
+	private void parseJSONResponse(String content){
+		try{
+			System.out.println(content);
+		}catch(NullPointerException e){
+			System.out.println("aw");
+		}
+
+		TokenParser parser = new TokenParser(content);
+		
+		data = parser.extractData();
+			
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
