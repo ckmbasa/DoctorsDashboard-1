@@ -3,6 +3,9 @@
  ** Created on 05/07/14
  ** This class handles all database processes (SELECT,POST,UPDATE,DELETE)
  *  related to Accounts
+ *  
+ *  Updated by Christian Joseph Dalisay
+ ** Updated on 05/10/14
  */
 
 package com.example.database;
@@ -46,14 +49,12 @@ public class AccountsAdapter extends Data{
 		//Add code here for query getting number of accounts in mobile DB
 		db = dbHandler.getReadableDatabase();
 		String query=
-				" SELECT count(" + PERSONNEL_ID + ")" +
+				" SELECT count(" + LICENSE_NO + ")" +
 				" FROM " + TABLE_DOCTOR;
 		
 		cursor = db.rawQuery(query, null);
 		cursor.moveToFirst();
-		
 		System.out.println(cursor.getInt(0));
-		//return cursor.getInt(0);
-		return 0; //Assume initial use of app
+		return cursor.getInt(0);
 	}
 }

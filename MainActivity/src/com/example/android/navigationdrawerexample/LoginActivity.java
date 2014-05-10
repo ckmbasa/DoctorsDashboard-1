@@ -1,7 +1,16 @@
-package com.example.android.navigationdrawerexample;
+/*
+ ** Created by Alvin Jay Cosare
+ ** Created on 05/06/14
+ ** Handles processes for the logging in of the user
+ **
+ ** Updated by Christian Joseph Dalisay
+ ** Updated on 05/10/14
+ */
 
-import java.util.UUID;
+ package com.example.android.navigationdrawerexample;
 
+import com.example.api.auth.HMAC_SHA1;
+import com.example.api.auth.MD5Hash;
 import com.example.database.*;
 import com.example.model.Registration;
 import com.example.model.TokenValidate;
@@ -11,16 +20,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +67,7 @@ public class LoginActivity extends Activity {
 		startActivity(intent);
 	}
 	
+	
 	public void successfulLogin(){
 		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 		startActivity(intent);	
@@ -90,7 +94,14 @@ public class LoginActivity extends Activity {
 		convertInputText();
 		
 		/* Validate inputs from user (i.e. empty field, unequal passwords) */
-		//validateInputs();
+		if(validateInputs()){
+			if (AuthtokenValidation()){
+				successfulLogin();
+			}
+			else {
+				Toast.makeText(getApplicationContext(), "Failed to Authenticate", Toast.LENGTH_SHORT).show();
+			}
+		}
 
 		Registration reg = new Registration();
 
@@ -111,5 +122,108 @@ public class LoginActivity extends Activity {
 		token.getAccessToken();
 	}
 	
+	public boolean validateInputs(){
+		/*Created By: Christian Joseph Dalisay
+		 * Created On: 05/08/14
+		 * ValidatesInputs - Validates the input of the user for logging in
+		 */
+			boolean cancel = false; //for flagging; will be equal to true if there are errors
+			View focusView = null; //refers to the EditText View that will be focused if there are errors
+			
+			if (password.isEmpty()){
+				et_password.setError(getString(R.string.error_field_required));
+				focusView = et_password;
+				cancel = true;
+			}
+			
+			if (username.isEmpty()){
+				et_username.setError(getString(R.string.error_field_required));
+				focusView = et_username;		
+				cancel = true;
+			} 
+			
+			if(cancel){
+				focusView.requestFocus();
+				return false;
+			}
+			
+			else {
+				// Show a progress spinner, and kick off a background task to
+				// perform the user login attempt.
+				//mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+				//showProgress(true);
+				return true;
+			}
+		}
 	
+	public Boolean AuthtokenValidation() {
+	/* Created By: Christian Joseph Dalisay
+	 * Created On: 05/08/14
+	 * AuthtokenValidation - validates if the stored authtoken is same with the generated authtoken
+	 */
+		TokenAdapter token = new TokenAdapter(this);
+		RegistrationAdapter client = new RegistrationAdapter(this);
+		
+		String data = client.getClientId() + "\n" + username;
+		String key = "";
+		try {
+			key = MD5Hash.md5(password);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*System.out.println("data " + data);
+		System.out.println("key " + key);
+		System.out.println("token " + token.getAuthToken());
+		System.out.println("HMAC " + HMAC_SHA1.hmacDigest(data,key).toString());*/
+		if(token.getAuthToken() == HMAC_SHA1.hmacSha1(data,key)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+	
+	/**
+	 * Shows the progress UI and hides the login form.
+	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+	private void showProgress(final boolean show) {
+		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+		// for very easy animations. If available, use these APIs to fade-in
+		// the progress spinner.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+			int shortAnimTime = getResources().getInteger(
+					android.R.integer.config_shortAnimTime);
+
+			mLoginStatusView.setVisibility(View.VISIBLE);
+			mLoginStatusView.animate().setDuration(shortAnimTime)
+					.alpha(show ? 1 : 0)
+					.setListener(new AnimatorListenerAdapter() {
+						@Override
+						public void onAnimationEnd(Animator animation) {
+							mLoginStatusView.setVisibility(show ? View.VISIBLE
+									: View.GONE);
+						}
+					});
+
+			mLoginFormView.setVisibility(View.VISIBLE);
+			mLoginFormView.animate().setDuration(shortAnimTime)
+					.alpha(show ? 0 : 1)
+					.setListener(new AnimatorListenerAdapter() {
+						@Override
+						public void onAnimationEnd(Animator animation) {
+							mLoginFormView.setVisibility(show ? View.GONE
+									: View.VISIBLE);
+						}
+					});
+		} else {
+			// The ViewPropertyAnimator APIs are not available, so simply show
+			// and hide the relevant UI components.
+			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
+			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+		}
+	}
 }

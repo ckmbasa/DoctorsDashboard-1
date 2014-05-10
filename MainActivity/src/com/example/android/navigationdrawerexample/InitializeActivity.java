@@ -1,3 +1,12 @@
+/*
+ ** Created by Alvin Jay Cosare
+ ** Created on 05/06/14
+ ** Handles processes for the initialization of the application
+ **
+ ** Updated by Christian Joseph Dalisay
+ ** Updated on 05/10/14
+ */
+
 package com.example.android.navigationdrawerexample;
 
 import java.util.UUID;
@@ -6,17 +15,8 @@ import com.example.database.AccountsAdapter;
 import com.example.database.ClientAdapter;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-
 
 public class InitializeActivity extends Activity{
 	
@@ -42,6 +42,7 @@ public class InitializeActivity extends Activity{
 		} 
 		else{
 			showLoginActivity();
+			finish();
 		}
 			
 	}

@@ -14,7 +14,7 @@ public class Data {
 	 * 	Note: Commented columns are already instantiated on the previous lines.
 	 * --------------------------------------------------------------------------
 	 */
-
+	
 	// Table Name: Client
 	public static final String TABLE_CLIENT = "client";
 	public static final String ID			= "id";
@@ -22,17 +22,17 @@ public class Data {
 	
 	// Table Name: Doctor
 	public static final String TABLE_DOCTOR = "doctor";
-	public static final String PERSONNEL_ID = "personnel_id";
 	public static final String LICENSE_NO 	= "license_no";
 	public static final String DEPT_ID		= "dept_id";
 	public static final String NAME_LAST 	= "name_last";
 	public static final String NAME_FIRST 	= "name_first";
 	public static final String NAME_MIDDLE 	= "name_middle";
-	public static final String TOKEN 		= "token";
+	public static final String AUTH 		= "authtoken";
+	public static final String ACCESS 		= "accesstoken";
 	public static final String LAST_SYNC 	= "date_last_sync";
 	public static final String URL 			= "base_url";
-	public static final String USERNAME 	= "username";
-	public static final String PASSWORD 	= "password";
+	public static final String BIRTH 	= "date_birth";
+	public static final String SEX 		= "sex";
 	
 	// Table Name: Department
 	static final String TABLE_DEPARTMENT 	= "department";
@@ -47,8 +47,8 @@ public class Data {
 	//public static final String NAME_LAST 	= "name_last";
 	//public static final String NAME_FIRST = "name_first";
 	//public static final String NAME_MIDDLE = "name_middle";
-	public static final String SEX			= "sex";
-	public static final String BIRTH 		= "date_birth";
+	//public static final String SEX		= "sex";
+	//public static final String BIRTH 		= "date_birth";
 	public static final String STREET 		= "street";
 	public static final String CITY 		= "city";
 	public static final String PROVINCE 	= "province";
@@ -126,7 +126,7 @@ public class Data {
 	//	-----Table Creation Statements--------------
 	 static final String CREATE_TABLE_CLIENT = 
 		"CREATE TABLE " + TABLE_CLIENT + " ( " +
-		ID + " INTEGER PRIMARY KEY DEFAULT 1 , " +
+		ID + " INTEGER PRIMARY KEY DEFAULT 0 , " +
 		CLIENT_ID + " TEXT UNIQUE" + " ) ";
 	
 	 static final String CREATE_TABLE_DEPARTMENT = 
@@ -138,38 +138,41 @@ public class Data {
 	
 	 static final String CREATE_TABLE_DOCTOR = 
 		"CREATE TABLE " + TABLE_DOCTOR + " (" +
-		PERSONNEL_ID	+ " INTEGER PRIMARY KEY AUTOINCREMENT, "	+
-		DEPT_ID			+ " INTEGER NOT NULL REFERENCES " 	+ TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
-		LICENSE_NO		+ " NVARCHAR(15) UNIQUE, " +
-		NAME_LAST 		+ " NVARCHAR(20) NOT NULL, " +
-		NAME_FIRST 		+ " NVARCHAR(30) NOT NULL, " +
-		NAME_MIDDLE 	+ " NVARCHAR(20) , " 		+
-		TOKEN 			+ " NVARCHAR(32) UNIQUE, " 	+
-		URL 			+ " NVARCHAR(32) UNIQUE" 	+	" )";
+		LICENSE_NO	+ " NVARCHAR(10) PRIMARY KEY, " +
+		DEPT_ID		+ " CHAR(3) NOT NULL ," +
+				//"REFERENCES " 	+ TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
+		NAME_LAST 	+ " NVARCHAR(20) NOT NULL, " +
+		NAME_FIRST 	+ " NVARCHAR(30) NOT NULL, " +
+		NAME_MIDDLE + " NVARCHAR(20) , " 		+
+		AUTH 		+ " NVARCHAR(45) UNIQUE, " 	+
+		ACCESS 		+ " NVARCHAR(45) UNIQUE, " 	+
+		SEX 		+ " CHAR(1), " 		+
+		BIRTH 		+ " DATE, " 		+
+		URL 		+ " TEXT " 	+	" )";
 	
 	 static final String CREATE_TABLE_PATIENT = 
 		"CREATE TABLE " + TABLE_PATIENT + " ( " +
-		PID 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		NAME_LAST 		+ " NVARCHAR(20) NOT NULL, " +
-		NAME_FIRST		+ " NVARCHAR(30) NOT NULL, " +
-		NAME_MIDDLE		+ " NVARCHAR(20), " +
-		SEX 			+ " CHAR(1), " 		+
-		BIRTH 			+ " DATE, " 		+
-		STREET 			+ " NVARCHAR(20), " +
-		CITY 			+ " NVARCHAR(20), " +
-		PROVINCE 		+ " NVARCHAR(20), " +
-		ZIPCODE 		+ " CHAR(4), "		+
-		SMOKE 			+ " BOOLEAN DEFAULT 0, "	+
-		DRINK 			+ " BOOLEAN DEFAULT 0  "	+	" ) ";
+		PID 		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		NAME_LAST 	+ " NVARCHAR(20) NOT NULL, " +
+		NAME_FIRST	+ " NVARCHAR(30) NOT NULL, " +
+		NAME_MIDDLE	+ " NVARCHAR(20), " +
+		SEX 		+ " CHAR(1), " 		+
+		BIRTH 		+ " DATE, " 		+
+		STREET 		+ " NVARCHAR(20), " +
+		CITY 		+ " NVARCHAR(20), " +
+		PROVINCE 	+ " NVARCHAR(20), " +
+		ZIPCODE 	+ " CHAR(4), "		+
+		SMOKE 		+ " BOOLEAN DEFAULT 0, "	+
+		DRINK 		+ " BOOLEAN DEFAULT 0  "	+	" ) ";
 		
 	 static final String CREATE_TABLE_ENCOUNTER = 
 		"CREATE TABLE " + TABLE_ENCOUNTER + "(" +
 		ENCOUNTER_ID	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		PERSONNEL_ID 	+ " INTEGER REFERENCES " + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
-		PID 			+ " INTEGER REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
-		PATIENT 		+ " NVARCHAR(20), " +
-		COMPLAINT 		+ " TEXT, " +
-		ENCOUNTERED 	+ " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " + ")";
+		LICENSE_NO 	+ " INTEGER REFERENCES " + TABLE_DOCTOR + "(" + LICENSE_NO + ")" + ", "	+
+		PID 		+ " INTEGER REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
+		PATIENT 	+ " NVARCHAR(20), " +
+		COMPLAINT 	+ " TEXT, " +
+		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " + ")";
 	
 	 static final String CREATE_TABLE_REASON = 
 		"CREATE TABLE " + TABLE_REASON + "(" +

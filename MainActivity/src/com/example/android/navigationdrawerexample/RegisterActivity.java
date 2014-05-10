@@ -2,51 +2,46 @@
  ** Created by Alvin Jay Cosare
  ** Created on 05/06/14
  ** Handles processes for the registration of a new account 
+ **
+ ** Updated by Christian Joseph Dalisay
+ ** Updated on 05/10/14
  */
 
 package com.example.android.navigationdrawerexample;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import org.apache.http.Header;
-import org.apache.http.message.BasicHeader;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.api.auth.MD5Hash;
+import com.example.database.DoctorAdapter;
 import com.example.database.RegistrationAdapter;
+import com.example.model.Doctor;
 import com.example.model.Registration;
 import com.example.model.Rest;
 import com.example.parser.TokenParser;
-import com.google.resting.Resting;
-import com.google.resting.component.EncodingTypes;
-import com.google.resting.component.impl.BasicRequestParams;
-import com.google.resting.component.impl.ServiceResponse;
-import com.google.resting.json.JSONException;
 
 public class RegisterActivity extends Activity{
 
 	private Registration reg;
 	private Rest rest;
 	
-	private String license_nr;// = "0117236";
-	private String username;// = "seurinane";
-	private String password;// = "1234";
-	private String confirm_password;// = "1234";
-	private String base_url;// = "121.97.45.242";
+	private String license_nr = "0117236";
+	private String username = "seurinane";
+	private String password = "1234";
+	private String confirm_password = "1234";
+	private String base_url = "121.97.45.242";
 	
 	private HashMap<String, String> data;
 	
@@ -76,6 +71,22 @@ public class RegisterActivity extends Activity{
 		/* if inputs are all valid, submits them thru API */
 		if(prepareCredentials()){
 			submitCredentials();
+			
+			String[] rArr = {
+					license_nr,
+					data.get("location_nr"),
+					data.get("name_last"),
+					data.get("name_first"),
+					data.get("name_middle"),
+					data.get("auth_token"),
+					data.get("access_token"),
+					data.get("birth_date"),
+					data.get("sex"),
+					base_url
+			};
+			Doctor doctor = new Doctor();
+			doctor.setDoctorCredentials(rArr);
+			setRetrievedCredentials(doctor);
 		}
 	}
 	
@@ -102,6 +113,12 @@ public class RegisterActivity extends Activity{
 		reg.setClientId(getClientId());
 		
 		return true;
+	}
+	
+	private void setRetrievedCredentials(Doctor rDoctor){
+		//stores the retrieved doctor info and tokens to the database
+		DoctorAdapter doctor = new DoctorAdapter(this);
+		doctor.addDoctor(rDoctor);
 	}
 	
 	/* Associate layout elements with class variables */
@@ -163,8 +180,29 @@ public class RegisterActivity extends Activity{
 			cancel = true;
 		} 
 		
+		if (license_nr.length() != 7) {
+			et_license_nr.setError(getString(R.string.error_invalid_length));
+			focusView = et_license_nr;
+			cancel = true;
+		} 
+		
+		// must only contain numeric characters
+		String regex = "\\d+"; 
+		if (!license_nr.matches(regex)) {
+			et_license_nr.setError(getString(R.string.error_invalid_format));
+			focusView = et_license_nr;
+			cancel = true;
+		} 
+		
+		if ( URLUtil.isValidUrl(base_url)) {
+			et_base_url.setError(getString(R.string.error_invalid_format));
+			focusView = et_base_url;
+			cancel = true;
+		} 
+		
 		if(!password.equals(confirm_password) && !cancel){
 			Toast.makeText(getApplicationContext(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
+			return false;
 		}
 		
 		/* if there are invalid inputs, show notice */
@@ -175,7 +213,6 @@ public class RegisterActivity extends Activity{
 		else{
 			return true;
 		}
-			
 	}
 	
 	/* Retrieves client_id of mobile device and returns it as string */

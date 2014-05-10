@@ -61,7 +61,7 @@ public class ValidateDoctor extends Activity {
 		//Toast.makeText(this, username + " " + password, Toast.LENGTH_SHORT).show();
 		DatabaseAdapter db = new DatabaseAdapter(this);
 		if(password.equals(confirm_password)){
-			db.updateDoctor(personnel_number, username, password);
+			//db.updateDoctor(personnel_number, username, password);
 			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
 		}
