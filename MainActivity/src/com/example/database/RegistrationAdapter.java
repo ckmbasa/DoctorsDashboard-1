@@ -41,22 +41,37 @@ public class RegistrationAdapter extends Data{
 		}
 	}
 	
-	public void setClientId(String client_id){
-		db = dbHandler.getWritableDatabase();
-		String query = 
-			"INSERT into " + TABLE_CLIENT + " (client_id) VALUES (" + client_id + ")";
-		
-		System.out.println("insert client");
-		db.execSQL(query);
-	}
-	
 	public String getClientId(){
 		//Add code for query getting number of accounts in mobile DB
+		
 		db = dbHandler.getWritableDatabase();
+		
 		String query = 
-			"SELECT " + CLIENT_ID +" FROM " + TABLE_CLIENT + " WHERE id = 0";
+			"SELECT " + CLIENT_ID +
+			" FROM " + TABLE_CLIENT + 
+			" WHERE id = 1";
+		
+		
+		Cursor cursor = db.rawQuery(query, null);
+		cursor.moveToFirst();
+		
+		System.out.println(cursor.getString(0));
+		return cursor.getString(0);
+	}
+	
+	
+	public String getBaseURL(String license_nr){
+
+		db = dbHandler.getWritableDatabase();
+		
+		String query = 
+			"SELECT " + URL + 
+			" FROM " + TABLE_DOCTOR + 
+			" WHERE " + LICENSE_NO + " = '" + license_nr + "'";
+		
 		Cursor cursor = db.rawQuery(query, null);
 		System.out.println(cursor.getString(0));
+		
 		return cursor.getString(0);
 	}
 	

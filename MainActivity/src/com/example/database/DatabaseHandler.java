@@ -17,9 +17,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
+	
 	public DatabaseHandler(Context context, String name, CursorFactory factory, int version)  {
 	    super(context, name, factory, version);
-	    Log.d("DatabaseHandler", "Database Created");
 	}
 	
 	//	----------------TABLE CREATION METHODS----------------

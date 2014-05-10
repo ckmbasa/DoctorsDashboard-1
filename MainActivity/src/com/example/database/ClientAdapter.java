@@ -44,7 +44,7 @@ public class ClientAdapter extends Data{
 	/* Checks if a client_id already exists */
 	public boolean clientIdExists(){
 	
-		db = dbHandler.getWritableDatabase();
+		db = dbHandler.getReadableDatabase();
 		String query = 
 				"SELECT " + CLIENT_ID + 
 			    " FROM " + TABLE_CLIENT + 
@@ -61,7 +61,7 @@ public class ClientAdapter extends Data{
 	
 	/*  generated client_id to mobile DB */
 	public void insertClientId(String client_id){
-		System.out.println("inserting");
+		System.out.println("inserting client_id..");
 		db = dbHandler.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();

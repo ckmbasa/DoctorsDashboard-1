@@ -14,7 +14,7 @@ public class Data {
 	 * 	Note: Commented columns are already instantiated on the previous lines.
 	 * --------------------------------------------------------------------------
 	 */
-	
+
 	// Table Name: Client
 	public static final String TABLE_CLIENT = "client";
 	public static final String ID			= "id";

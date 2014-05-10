@@ -76,7 +76,8 @@
                 android:layout_marginTop="16dp"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
-                android:text="@string/str_login" />
+                android:text="@string/str_login" 
+                android:onClick="handleLogin" />
             
             <Button
                 android:id="@+id/register_button"

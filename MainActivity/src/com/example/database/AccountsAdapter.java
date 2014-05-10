@@ -25,6 +25,7 @@ import com.example.database.Data;
 
 public class AccountsAdapter extends Data{
 	
+	Cursor cursor;
 	
 	public  SQLiteDatabase db;
 	private DatabaseHandler dbHandler;
@@ -34,10 +35,8 @@ public class AccountsAdapter extends Data{
 	//
 	public  AccountsAdapter(Context context) 
 	{
-		
 		try {
 			dbHandler = new DatabaseHandler(context, DATABASE_NAME, null, DATABASE_VERSION);
-			Log.d("DatabaseHandler", "Database Created");
 		} catch (Exception e) {
 			Log.d("DatabaseHandler Exception", Log.getStackTraceString(e));
 		}
@@ -45,7 +44,16 @@ public class AccountsAdapter extends Data{
 	
 	public int getAccounts(){
 		//Add code here for query getting number of accounts in mobile DB
+		db = dbHandler.getReadableDatabase();
+		String query=
+				" SELECT count(" + PERSONNEL_ID + ")" +
+				" FROM " + TABLE_DOCTOR;
 		
-		return 0; //Assume that database is empty
+		cursor = db.rawQuery(query, null);
+		cursor.moveToFirst();
+		
+		System.out.println(cursor.getInt(0));
+		//return cursor.getInt(0);
+		return 0; //Assume initial use of app
 	}
 }

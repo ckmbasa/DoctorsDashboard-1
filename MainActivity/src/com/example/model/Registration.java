@@ -13,7 +13,7 @@ public class Registration{
 	private String password;
 	private String client_id;
 	private String server_id;
-	private String token;
+	private String base_url;
 	
 	public Registration() {
 		super();
@@ -29,23 +29,25 @@ public class Registration{
 	//Setter Methods	
 	
 	public void setLicenseNumber(String license_nr) {
-		System.out.println("license_nr set");
 		this.license_nr = license_nr;	
-		System.out.println(this.license_nr);
 	}
 
-	public void setUsername(String license_nr) {
+	public void setUsername(String username) {
 		this.username = username;	
 	}
 
-	public void setPassword(String license_nr) {
+	public void setPassword(String password) {
 		this.password = password;	
 	}
 
-	public void setClientId(String license_nr) {
+	public void setClientId(String client_id) {
 		this.client_id = client_id;	
 	}
 
+	public void setBaseURL(String base_url){
+		this.base_url = base_url;
+		//Add code for setting base_url for a doctor in mobile DB
+	}
 
 //Getter Methods	
 	
@@ -65,6 +67,8 @@ public class Registration{
 		return client_id;	
 	}
 
-
+	public String getBaseURL(){
+		return base_url;
+	}
 	
 }
