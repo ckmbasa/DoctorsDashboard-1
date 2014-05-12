@@ -2,10 +2,9 @@
  ** Created by Jessie Emmanuel Adante
  *** Created on 4/29/14
  ** Edited by Jose Martin Ipong - 4/29/14
- ** Edited by Christian Joseph Dalisay - 4/30/14
+ ** Updated by Christian Joseph Dalisay - 4/30/14
  
- ** DatabaseHandler - handles the CRUD Operations, 
- *					  and auxiliary database functions/queries
+ ** DatabaseHandler - This class handles the instantiation of the database
  */
 
 package com.example.database;

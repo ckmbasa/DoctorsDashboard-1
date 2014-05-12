@@ -17,7 +17,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="error_auth_failed">Authentication not valid</string>
+    <string name="error_auth_failed">Account does not exists</string>
     <string name="error_invalid_length">Not Valid Length</string>
     <string name="error_invalid_format">Invalid Format</string>
 	

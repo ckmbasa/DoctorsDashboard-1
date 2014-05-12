@@ -1,7 +1,8 @@
 /*Created By: Christian Joseph Dalisay
  * Created On: 05/08/14
- * TokenValidate - This model handles the authentication and access tokens
+ * TokenValidate - This model handles the data of authentication and access tokens
  */
+
 package com.example.model;
 
 public class TokenValidate {

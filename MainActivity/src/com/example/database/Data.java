@@ -2,7 +2,9 @@
  *  Created By: Christian Joseph Dalisay
  *  Created On: 05/01/14
  *  Updated On: 05/06/14
- *  Data Class - class contains the table names and its respective column name
+ *  Data Class - This class contains variables concerning the table names 
+ *  			 and its respective column name, with the table creation
+ *  			 statements
  */
 
 package com.example.database;
@@ -23,6 +25,7 @@ public class Data {
 	// Table Name: Doctor
 	public static final String TABLE_DOCTOR = "doctor";
 	public static final String LICENSE_NO 	= "license_no";
+	public static final String PERSONNEL_ID = "personnel_id";
 	public static final String DEPT_ID		= "dept_id";
 	public static final String NAME_LAST 	= "name_last";
 	public static final String NAME_FIRST 	= "name_first";
@@ -31,8 +34,8 @@ public class Data {
 	public static final String ACCESS 		= "accesstoken";
 	public static final String LAST_SYNC 	= "date_last_sync";
 	public static final String URL 			= "base_url";
-	public static final String BIRTH 	= "date_birth";
-	public static final String SEX 		= "sex";
+	public static final String BIRTH 		= "date_birth";
+	public static final String SEX 			= "sex";
 	
 	// Table Name: Department
 	static final String TABLE_DEPARTMENT 	= "department";
@@ -126,7 +129,7 @@ public class Data {
 	//	-----Table Creation Statements--------------
 	 static final String CREATE_TABLE_CLIENT = 
 		"CREATE TABLE " + TABLE_CLIENT + " ( " +
-		ID + " INTEGER PRIMARY KEY DEFAULT 0 , " +
+		ID + " INTEGER PRIMARY KEY DEFAULT 1 , " +
 		CLIENT_ID + " TEXT UNIQUE" + " ) ";
 	
 	 static final String CREATE_TABLE_DEPARTMENT = 
@@ -138,16 +141,17 @@ public class Data {
 	
 	 static final String CREATE_TABLE_DOCTOR = 
 		"CREATE TABLE " + TABLE_DOCTOR + " (" +
-		LICENSE_NO	+ " NVARCHAR(10) PRIMARY KEY, " +
-		DEPT_ID		+ " CHAR(3) NOT NULL ," +
+		PERSONNEL_ID + " INTEGER PRIMARY KEY NOT NULL , " +
+		LICENSE_NO	+ " NVARCHAR(10) UNIQUE, " +
+		DEPT_ID		+ " INTEGER NOT NULL, " +
 				//"REFERENCES " 	+ TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
 		NAME_LAST 	+ " NVARCHAR(20) NOT NULL, " +
 		NAME_FIRST 	+ " NVARCHAR(30) NOT NULL, " +
 		NAME_MIDDLE + " NVARCHAR(20) , " 		+
 		AUTH 		+ " NVARCHAR(45) UNIQUE, " 	+
 		ACCESS 		+ " NVARCHAR(45) UNIQUE, " 	+
-		SEX 		+ " CHAR(1), " 		+
-		BIRTH 		+ " DATE, " 		+
+		SEX 		+ " CHAR(1), " +
+		BIRTH 		+ " DATE, " +
 		URL 		+ " TEXT " 	+	" )";
 	
 	 static final String CREATE_TABLE_PATIENT = 
@@ -168,7 +172,8 @@ public class Data {
 	 static final String CREATE_TABLE_ENCOUNTER = 
 		"CREATE TABLE " + TABLE_ENCOUNTER + "(" +
 		ENCOUNTER_ID	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		LICENSE_NO 	+ " INTEGER REFERENCES " + TABLE_DOCTOR + "(" + LICENSE_NO + ")" + ", "	+
+		//LICENSE_NO 	+ " NVARCHAR(10) REFERENCES " + TABLE_DOCTOR + "(" + LICENSE_NO + ")" + ", "	+
+		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES " + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
 		PID 		+ " INTEGER REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
 		PATIENT 	+ " NVARCHAR(20), " +
 		COMPLAINT 	+ " TEXT, " +

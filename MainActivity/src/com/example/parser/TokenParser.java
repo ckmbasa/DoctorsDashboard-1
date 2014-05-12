@@ -19,22 +19,21 @@ public class TokenParser extends JSONParser {
 		} catch (JSONException e) {
 			System.out.println("JSON error");
 		}
-		
 	}
 	
 	public HashMap<String, String> extractData(){
 		System.out.println("saving data to HashMap..");
 		
-        data.put("auth_token", json_childNode.optString("auth_token").toString());
+        data.put("auth_token", json_childNode.optString("auth_token"));        
         data.put("access_token", json_childNode.optString("access_token"));
-        data.put("name_first", json_childNode.optString("name_first"));
+        data.put("name_first", json_childNode.optString("name_first").toString());
         data.put("name_middle", json_childNode.optString("name_middle").toString());
         data.put("name_last", json_childNode.optString("name_last").toString());
         data.put("sex", json_childNode.optString("sex").toString());
-        data.put("location_nr", json_childNode.optString("location_nr").toString());
-        data.put("birth_date", json_childNode.optString("birth_date").toString());
-     
+        data.put("location_nr", json_childNode.optString("location_nr"));
+        data.put("birth_date", json_childNode.optString("birth_date"));
+        data.put("personnel_nr", json_childNode.optString("personnel_nr"));
+        
         return data;
 	}
-
 }

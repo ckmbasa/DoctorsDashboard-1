@@ -8,8 +8,10 @@ package com.example.model;
 
 public class Doctor {
 
+	private int personnel_id;
 	private String license_no;
-	private String dept_id;
+	private int dept_id;
+	//private String dept_id;
 	private String name_last;
 	private String name_first;
 	private String name_middle;
@@ -21,8 +23,10 @@ public class Doctor {
 	private String sex;
 	
 	public Doctor() {
+		this.personnel_id	= (Integer) null;
 		this.license_no 	= "";
-		this.dept_id 		= "";
+		//this.dept_id 		= "";
+		this.dept_id		= (Integer) null;
 		this.name_last 		= "";
 		this.name_first 	= "";
 		this.name_middle 	= "";
@@ -36,6 +40,7 @@ public class Doctor {
 	}
 	
 	public void setDoctor(Doctor doctor){
+		this.personnel_id	= doctor.personnel_id;
 		this.license_no 	= doctor.license_no;
 		this.dept_id 		= doctor.dept_id;
 		this.name_last 		= doctor.name_last;
@@ -50,7 +55,7 @@ public class Doctor {
 		this.base_url 		= doctor.base_url;
 	}
 	
-	public void setDoctorCredentials(String[] doctor){
+	/*public void setDoctorCredentials(String[] doctor){
 		this.license_no 	= doctor[0];
 		this.dept_id 		= doctor[1];
 		this.name_last 		= doctor[2];
@@ -61,7 +66,18 @@ public class Doctor {
 		this.date_birth 	= doctor[7];
 		this.sex 			= doctor[8];
 		this.base_url 		= doctor[9];
-		
+	}*/
+	
+	public void setDoctorCredentials(String[] doctor){
+		this.license_no 	= doctor[0];
+		this.name_last 		= doctor[1];
+		this.name_first 	= doctor[2];
+		this.name_middle 	= doctor[3];
+		this.authtoken 		= doctor[4];
+		this.accesstoken 	= doctor[5];
+		this.date_birth 	= doctor[6];
+		this.sex 			= doctor[7];
+		this.base_url 		= doctor[8];
 	}
 	
 	public void setBaseUrl(String url) {
@@ -72,22 +88,33 @@ public class Doctor {
 		this.last_sync = sync;
 	}
 	
+	public void setPersonnelId(Integer personnel ) {
+		this.personnel_id = personnel;
+	}
+
+	public void setDeptId(Integer dept ) {
+		this.dept_id = dept;
+	}
+	
 	public void setDoctor(String license, String authtoken, String accesstoken) {
 		this.license_no 	= license;
 		this.authtoken 		= authtoken;
 		this.accesstoken 	= accesstoken;
-		
 	}
 	
 	public Doctor getDoctor() {
 		return this;
 	}
 	
+	public Integer getPersonnelId(){
+		return this.personnel_id;
+	}
+	
 	public String getLicenseNo(){
 		return this.license_no;
 	}
 	
-	public String getDeptId() {
+	public Integer getDeptId() {
 		return this.dept_id;
 	}
 	

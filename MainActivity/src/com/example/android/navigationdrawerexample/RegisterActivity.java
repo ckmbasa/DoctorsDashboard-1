@@ -72,21 +72,31 @@ public class RegisterActivity extends Activity{
 		if(prepareCredentials()){
 			submitCredentials();
 			
-			String[] rArr = {
-					license_nr,
-					data.get("location_nr"),
-					data.get("name_last"),
-					data.get("name_first"),
-					data.get("name_middle"),
-					data.get("auth_token"),
-					data.get("access_token"),
-					data.get("birth_date"),
-					data.get("sex"),
-					base_url
-			};
-			Doctor doctor = new Doctor();
-			doctor.setDoctorCredentials(rArr);
-			setRetrievedCredentials(doctor);
+			if(isDoctorExists(license_nr)){
+				String[] DoctorData = {
+						license_nr,
+						data.get("name_last"),
+						data.get("name_first"),
+						data.get("name_middle"),
+						data.get("auth_token"),
+						data.get("access_token"),
+						data.get("birth_date"),
+						data.get("sex"),
+						base_url
+				};
+				
+				Doctor doctor = new Doctor();
+				//Inserting Integer Data to the model
+				doctor.setDeptId(Integer.parseInt(data.get("location_nr")));
+				doctor.setPersonnelId(Integer.parseInt(data.get("personnel_nr")));
+				//doctor.setPersonnelId(Integer.parseInt("100023"));
+				//Inserting string Data to the model
+				doctor.setDoctorCredentials(DoctorData);
+				setRetrievedCredentials(doctor);
+			}
+			else{
+				Toast.makeText(getApplicationContext(), "Account Already Exists", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 	
@@ -194,7 +204,15 @@ public class RegisterActivity extends Activity{
 			cancel = true;
 		} 
 		
-		if ( URLUtil.isValidUrl(base_url)) {
+		// must only contain alphanumeric characters
+		/*regex = "\\d+"; 
+		if (!username.matches(regex)) {
+			et_username.setError(getString(R.string.error_invalid_format));
+			focusView = et_license_nr;
+			cancel = true;
+		} */
+		
+		if (URLUtil.isValidUrl(base_url)) {
 			et_base_url.setError(getString(R.string.error_invalid_format));
 			focusView = et_base_url;
 			cancel = true;
@@ -212,6 +230,15 @@ public class RegisterActivity extends Activity{
 		}
 		else{
 			return true;
+		}
+	}
+	
+	private boolean isDoctorExists(String license) {
+		DoctorAdapter _doctor = new DoctorAdapter(this);
+		if(_doctor.isDoctorExists(license)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

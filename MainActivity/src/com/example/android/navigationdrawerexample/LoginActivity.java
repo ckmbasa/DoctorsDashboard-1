@@ -9,7 +9,14 @@
 
  package com.example.android.navigationdrawerexample;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+
+import com.example.api.auth.HMACGeneration;
 import com.example.api.auth.HMAC_SHA1;
+import com.example.api.auth.HmacSha1Signature;
+import com.example.api.auth.HmacUtils;
 import com.example.api.auth.MD5Hash;
 import com.example.database.*;
 import com.example.model.Registration;
@@ -157,34 +164,44 @@ public class LoginActivity extends Activity {
 		}
 	
 	public Boolean AuthtokenValidation() {
-	/* Created By: Christian Joseph Dalisay
-	 * Created On: 05/08/14
-	 * AuthtokenValidation - validates if the stored authtoken is same with the generated authtoken
-	 */
-		TokenAdapter token = new TokenAdapter(this);
 		RegistrationAdapter client = new RegistrationAdapter(this);
-		
-		String data = client.getClientId() + "\n" + username;
+		String data = client.getClientId() + "\\n" + username;
 		String key = "";
+		
 		try {
 			key = MD5Hash.md5(password);
+			System.out.println("Key " + key);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		/*System.out.println("data " + data);
-		System.out.println("key " + key);
-		System.out.println("token " + token.getAuthToken());
-		System.out.println("HMAC " + HMAC_SHA1.hmacDigest(data,key).toString());*/
-		if(token.getAuthToken() == HMAC_SHA1.hmacSha1(data,key)) {
+		String digest = null;
+		try {
+			digest = HMAC_SHA1.hmacSha1(data,key);
+			digest = HMACGeneration.getHmacMD5(data, key, "HmacSHA1");
+			digest = HmacSha1Signature.hmacSha1(data, key);
+			//digest = HmacUtils.hmacSha1(data, key);
+			//digest = HmacUtils.hmacSha1(key, data);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block[
+			e.printStackTrace();
+		}
+		//System.out.println("digest " + digest);
+		if(isAuthtokenExists(digest)) {
 			return true;
 		}
 		else {
 			return false;
 		}
-		
 	}
 	
+	private boolean isAuthtokenExists(String token) {
+		TokenAdapter _token = new TokenAdapter(this);
+		if(_token.isAuthtokenExists(token)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	/**
 	 * Shows the progress UI and hides the login form.

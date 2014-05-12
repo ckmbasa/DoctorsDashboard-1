@@ -1,13 +1,13 @@
 /*Created By: Christian Joseph Dalisay
  * Created On: 05/08/14
- * TokenAdapter - This table adapter manages the tokens
+ * TokenAdapter - this class handles the database functions for the
+ * 					authtoken and accesstoken from the table doctor
  */
 	
 package com.example.database;
 
 import com.example.model.TokenValidate;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -18,6 +18,7 @@ public class TokenAdapter extends Data {
 	
 	public  SQLiteDatabase db;
 	private DatabaseHandler dbHandler;
+	Cursor cursor;
 	
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";
@@ -26,53 +27,55 @@ public class TokenAdapter extends Data {
 	{
 		try {
 			dbHandler = new DatabaseHandler(context, DATABASE_NAME, null, DATABASE_VERSION);
-			Log.d("DatabaseHandler", "Database Created");
+			Log.d("TokenAdapter", "Database Created");
 		} catch (Exception e) {
 			Log.d("DatabaseHandler Exception", Log.getStackTraceString(e));
 		}
 	}
 	
+	//This function gets the authentication  token from the table doctor
 	public String getAuthToken() {
 		db = dbHandler.getWritableDatabase();
-		String sql = "SELECT authtoken FROM 'doctor'";
-		Cursor cursor=db.rawQuery(sql, null);
-		cursor.moveToFirst();
-		System.out.println("Token " + cursor.getString(0));
+		String sql = "SELECT authtoken LIMIT '1' FROM 'doctor'";
+		
 		try {
-			Log.d("TokenAdapter getAuthentication", "Valid Authentication Token");
-			return cursor.getString(0);
+			cursor = db.rawQuery(sql, null);
 		}catch(Exception e){
         	Log.d("TokenAdapter getAuthentication", Log.getStackTraceString(e));
         	return null;
         }
+		cursor.moveToFirst();
+		System.out.println("Token " + cursor.getString(0));
+		return cursor.getString(0);
 	}
 	
+	/*
+	 * This function gets the authentication and access token from the table doctor 
+	 * using his/her license no
+	 */
 	public TokenValidate getTokens(String rLicense){
 		db = dbHandler.getWritableDatabase();
-		
 		String sql = "SELECT 'authtoken','accesstoken' LIMIT '1' FROM 'doctor' WHERE 'license_no' = " + rLicense;
-		Cursor cursor=db.rawQuery(sql, null);
+		
 		try{
-            TokenValidate token = new TokenValidate();
-            token.setTokens(cursor.getString(0), cursor.getString(1));
-            return token;
+			cursor = db.rawQuery(sql, null);
         }catch(Exception e) {
          Log.d("Token Adapter getTokens", Log.getStackTraceString(e));
          return null;
         }
+		
+		TokenValidate token = new TokenValidate();
+        token.setTokens(cursor.getString(0), cursor.getString(1));
+        return token;
 	}
 	
+	/*
+	 * This function sets the authentication and access token from the table doctor 
+	 * using his/her license no
+	 */
 	public void setTokens(String[] rToken,String license){
 		db = dbHandler.getWritableDatabase();
-		
-        /*
-		ContentValues values = new ContentValues();
-		values.put(AUTH, token.getAuthToken());
-		values.put(ACCESS, token.getAccessToken());
-		
-		db.insert(TABLE_DOCTOR, null, values);
-		*/
-        String query = "UPDATE " + TABLE_DOCTOR + 
+		String query = "UPDATE " + TABLE_DOCTOR + 
         				" SET '" + AUTH + "' = " + rToken[0] + ", "	 +
         						   ACCESS + "' = " + rToken[1] + " " +
         				" WHERE '"+ LICENSE_NO + "' = " + license;
@@ -81,7 +84,29 @@ public class TokenAdapter extends Data {
         } catch(SQLException se) {
         	Log.d("TokenAdapter setTokens", Log.getStackTraceString(se));
         }
-        						 
+    }
+	
+	//This function checks if the given authentication token exists
+	public boolean isAuthtokenExists(String token){
+		System.out.println("Token " + token);
+		db = dbHandler.getWritableDatabase();
+		String query=
+				" SELECT count(" + AUTH + ")" +
+				" FROM " + TABLE_DOCTOR + 
+				" WHERE authtoken = '" + token + "'";
+		try {
+			 cursor = db.rawQuery(query, null);
+			 cursor.moveToFirst();
+			 System.out.println("No of AuthTokens: " + cursor.getInt(0));
+		} catch(SQLException se) {
+	        Log.d("TokenAdapter isAuthtokenExists", Log.getStackTraceString(se));
+	        return false;
+	    }
+		
+		if(cursor.getInt(0) > 0)
+			return true;
+		else
+			return false;
 	}
 }
 
