@@ -9,14 +9,7 @@
 
  package com.example.android.navigationdrawerexample;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-
-import com.example.api.auth.HMACGeneration;
 import com.example.api.auth.HMAC_SHA1;
-import com.example.api.auth.HmacSha1Signature;
-import com.example.api.auth.HmacUtils;
 import com.example.api.auth.MD5Hash;
 import com.example.database.*;
 import com.example.model.Registration;
@@ -137,6 +130,20 @@ public class LoginActivity extends Activity {
 			boolean cancel = false; //for flagging; will be equal to true if there are errors
 			View focusView = null; //refers to the EditText View that will be focused if there are errors
 			
+			// must only contain alphanumeric characters
+			String regex = "[\\p{Alnum}]+"; 
+			if (!username.matches(regex)) {
+				et_username.setError(getString(R.string.error_invalid_format));
+				focusView = et_username;
+				cancel = true;
+			} 
+			
+			if (!password.matches(regex)) {
+				et_password.setError(getString(R.string.error_invalid_format));
+				focusView = et_password;
+				cancel = true;
+			} 
+			
 			if (password.isEmpty()){
 				et_password.setError(getString(R.string.error_field_required));
 				focusView = et_password;
@@ -177,15 +184,10 @@ public class LoginActivity extends Activity {
 		String digest = null;
 		try {
 			digest = HMAC_SHA1.hmacSha1(data,key);
-			digest = HMACGeneration.getHmacMD5(data, key, "HmacSHA1");
-			digest = HmacSha1Signature.hmacSha1(data, key);
-			//digest = HmacUtils.hmacSha1(data, key);
-			//digest = HmacUtils.hmacSha1(key, data);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block[
 			e.printStackTrace();
 		}
-		//System.out.println("digest " + digest);
 		if(isAuthtokenExists(digest)) {
 			return true;
 		}

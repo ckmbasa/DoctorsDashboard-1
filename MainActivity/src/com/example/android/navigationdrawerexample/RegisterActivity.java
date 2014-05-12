@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.api.auth.IPAddressValidator;
 import com.example.api.auth.MD5Hash;
 import com.example.database.DoctorAdapter;
 import com.example.database.RegistrationAdapter;
@@ -161,6 +162,52 @@ public class RegisterActivity extends Activity{
 		/* refers to the EditText View that will be focused if there are errors */
 		focusView = null; 
 		
+		if (license_nr.length() != 7) {
+			et_license_nr.setError(getString(R.string.error_invalid_length));
+			focusView = et_license_nr;
+			cancel = true;
+		} 
+		
+		// must only contain numeric characters
+		String regex = "\\d+"; 
+		if (!license_nr.matches(regex)) {
+			et_license_nr.setError(getString(R.string.error_invalid_format));
+			focusView = et_license_nr;
+			cancel = true;
+		} 
+		
+		// must only contain alphanumeric characters
+		regex = "[\\p{Alnum}]+"; 
+		if (!username.matches(regex)) {
+			et_username.setError(getString(R.string.error_invalid_format));
+			focusView = et_username;
+			cancel = true;
+		} 
+		
+		if (!username.matches(regex)) {
+			et_username.setError(getString(R.string.error_invalid_format));
+			focusView = et_username;
+			cancel = true;
+		} 
+		
+		if (!confirm_password.matches(regex)) {
+			et_confirm_password.setError(getString(R.string.error_invalid_format));
+			focusView = et_confirm_password;
+			cancel = true;
+		} 
+		
+		IPAddressValidator address = new IPAddressValidator();
+		if(!address.validate(base_url)) {
+			et_base_url.setError(getString(R.string.error_invalid_format));
+			focusView = et_base_url;
+			cancel = true;
+		}
+		
+		if(!password.equals(confirm_password) && !cancel){
+			Toast.makeText(getApplicationContext(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		
 		if (base_url.isEmpty()){
 			et_base_url.setError(getString(R.string.error_field_required));
 			focusView = et_base_url;
@@ -189,39 +236,6 @@ public class RegisterActivity extends Activity{
 			focusView = et_license_nr;
 			cancel = true;
 		} 
-		
-		if (license_nr.length() != 7) {
-			et_license_nr.setError(getString(R.string.error_invalid_length));
-			focusView = et_license_nr;
-			cancel = true;
-		} 
-		
-		// must only contain numeric characters
-		String regex = "\\d+"; 
-		if (!license_nr.matches(regex)) {
-			et_license_nr.setError(getString(R.string.error_invalid_format));
-			focusView = et_license_nr;
-			cancel = true;
-		} 
-		
-		// must only contain alphanumeric characters
-		/*regex = "\\d+"; 
-		if (!username.matches(regex)) {
-			et_username.setError(getString(R.string.error_invalid_format));
-			focusView = et_license_nr;
-			cancel = true;
-		} */
-		
-		if (URLUtil.isValidUrl(base_url)) {
-			et_base_url.setError(getString(R.string.error_invalid_format));
-			focusView = et_base_url;
-			cancel = true;
-		} 
-		
-		if(!password.equals(confirm_password) && !cancel){
-			Toast.makeText(getApplicationContext(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
-			return false;
-		}
 		
 		/* if there are invalid inputs, show notice */
 		if(cancel){
