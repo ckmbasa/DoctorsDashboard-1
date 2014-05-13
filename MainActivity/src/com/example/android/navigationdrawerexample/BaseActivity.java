@@ -134,7 +134,7 @@ public abstract class BaseActivity extends Activity{
         		intent = new Intent(context, PatientActivity.class);
         	}
         	else if(position == 1){
-        		intent = new Intent(context, LaboratoryActivity.class);
+        		intent = new Intent(context, CanvassActivity.class);
         	}
         	else if(position == 2){
         		intent = new Intent(context, MedicalHistoryActivity.class);
@@ -155,8 +155,10 @@ public abstract class BaseActivity extends Activity{
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
 
             }
-            
-        	
+            else if(position == 7){
+                
+                intent = new Intent(context, CanvassActivity.class);
+            }
         	startActivity(intent);
             selectItem(position);
             

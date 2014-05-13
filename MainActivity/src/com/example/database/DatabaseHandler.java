@@ -76,8 +76,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"	(100040,'1234568',133,'Caralos','Rex Arnold','Mesiona'), " +
 				"	(100054,'1234569',131,'Chin','Elizabeth May','Tan') "  );
 			db.execSQL("INSERT INTO 'patient' ('pid','name_last','name_first','name_middle','sex','date_birth','street','city','province','zipcode','hist_smoke','hist_drink') " +
-				" VALUES (1,'Cosare','Alvin','Ceniza','m','1994-00-00','Mintal','Davao City','Davao del Sur','8000',1,0), " + 
-				" 	(3,'Unknown','Patient','SPMC','f','0000-00-00','','','','',1,1), " + 
+				" VALUES " + //(1,'Cosare','Alvin','Ceniza','m','1994-00-00','Mintal','Davao City','Davao del Sur','8000',1,0), " + 
+				//" 	(3,'Unknown','Patient','SPMC','f','0000-00-00','','','','',1,1), " + 
 				" 	(1000000,'Montelibano','Julie','Himo','f','2007-07-07','Commonal','Davao City','Davao del Sur','8000',0,1), " +
 				" 	(1000001,'Diamona','Francis','Garong','m','2003-04-30','Tuban','Davao City','Davao del Sur','8000',1,1), " + 
 				" 	(1086278,'Sarael','Val','Teofilo','m','1974-10-08','#250 BLK III SIR','Davao City','Davao del Sur','8000',0,0), " + 

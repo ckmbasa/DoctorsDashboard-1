@@ -21,6 +21,7 @@
 
     <string-array name="dashlets_array">
         <item>Patient</item>
+        <item>Canvass</item>
         <item>Laboratory</item>
         <item>Medical History</item>
         <item>Results</item>
@@ -67,5 +68,9 @@
     <string name="str_doctor_information">Doctor Information</string>
     <string name="title_activity_patient_info">PatientInfo</string>
     <string name="title_activity_patient_encounter">PatientEncounter</string>
+    <string name="title_activity_canvass">Canvass</string>
+    
+    <string name="hello_world">Hello world!</string>
+    <string android:id="@+id/string1" android:layout_height="wrap_content" android:layout_width="wrap_content" name="action_body">Body</string>    
 
 </resources>

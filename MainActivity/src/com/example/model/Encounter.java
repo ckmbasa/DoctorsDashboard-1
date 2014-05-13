@@ -1,13 +1,13 @@
 /*
  ** Created by Christian Joseph Dalisay
- ** Created on 04/30/14
+ ** Created on 05/02/14
+ ** Edited by Jessie Emmanuel Adante - 05/07/14
+ ** Edited by Jose Martin Ipong - 05/07/14
  ** Encounter model class 
  */
-
 package com.example.model;
 
-public class Encounter extends Patient{
-
+public class Encounter {
 	private int 	encounter_id;
 	private int 	pid;
 	private String 	type_patient;
@@ -15,36 +15,23 @@ public class Encounter extends Patient{
 	private String 	date_encountered;
 	private String 	date_released;
 	
-	public Encounter(Patient rPatient) {
-		super();
-		// TODO Auto-generated constructor stub
-		//Encounters within patients
-		this.encounter_id 		= (Integer) null;
-		this.pid 				= (Integer) null;
-		this.type_patient 		= null;
-		this.message_complaint 	= null;
-		this.date_encountered 	= null;
-		this.date_released 		= null;
-	}
-	
 	public Encounter(){
-		this.encounter_id 		= (Integer) null;
-		this.pid 				= (Integer) null;
-		this.type_patient 		= null;
-		this.message_complaint 	= null;
-		this.date_encountered 	= null;
-		this.date_released 		= null;
+		encounter_id 		= 0;
+		pid 				= 0;
+		type_patient 		= "";
+		message_complaint 	= "";
+		date_encountered 	= "";
+		date_released 		= "";
 	}
-
-	//Setter Methods	
 	
-	public void setEncounter(Encounter rEncounter) {
-		setEncounterId(rEncounter.encounter_id);
-		setPid(rEncounter.pid);
-		setTypePatient(rEncounter.type_patient);
-		setMessageComplaint(rEncounter.message_complaint);
-		setDateEncountered(rEncounter.date_encountered);
-		setDateReleased(rEncounter.date_released);
+	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid)
+	{
+		encounter_id = eid;
+		type_patient = typepatient;
+		message_complaint = messagecomplaint;
+		date_encountered = dateencountered;
+		date_released = datereleased;
+		pid = patientid;
 	}
 	
 	public void setEncounterId(int rEncounter_id) {
@@ -100,4 +87,10 @@ public class Encounter extends Patient{
 	public String getDateReleased() {
 		return this.date_released;
 	}
+	
+	public String toString()
+	{
+		return date_encountered + " " + type_patient + " " + message_complaint;
+	}
+
 }

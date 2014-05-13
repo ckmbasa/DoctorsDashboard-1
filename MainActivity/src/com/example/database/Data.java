@@ -56,8 +56,8 @@ public class Data {
 	public static final String CITY 		= "city";
 	public static final String PROVINCE 	= "province";
 	public static final String ZIPCODE 		= "zipcode";
-	public static final String SMOKE 		= "hist_smoke";
-	public static final String DRINK 		= "hist_drink";
+	public static final String SMOKE 		= "history_smoking";
+	public static final String DRINK 		= "history_drinking";
 	
 	// Table Name: Encounter
 	public static final String TABLE_ENCOUNTER = "encounter";
@@ -67,6 +67,7 @@ public class Data {
 	public static final String PATIENT 		= "type_patient";
 	public static final String COMPLAINT 	= "message_complaint";
 	public static final String ENCOUNTERED 	= "date_encountered";
+	public static final String RELEASED 	= "date_released";
 
 	
 	// Table Name: Referral
@@ -130,29 +131,29 @@ public class Data {
 	 static final String CREATE_TABLE_CLIENT = 
 		"CREATE TABLE " + TABLE_CLIENT + " ( " +
 		ID + " INTEGER PRIMARY KEY DEFAULT 1 , " +
-		CLIENT_ID + " TEXT UNIQUE" + " ) ";
+		CLIENT_ID + " TEXT UNIQUE NOT NULL" + " ) ";
 	
 	 static final String CREATE_TABLE_DEPARTMENT = 
 		"CREATE TABLE " + TABLE_DEPARTMENT + " ( " +
 		DEPT_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ACRONYM		+ " NVARCHAR(15), " +
 		SHORT_DEPT	+ " NVARCHAR(20) UNIQUE, " 	+
-		DEPT 		+ " NVARCHAR(25) UNIQUE  " 	+ " ) ";
+		DEPT 		+ " NVARCHAR(25) UNIQUE NOT NULL " 	+ " ) ";
 	
 	 static final String CREATE_TABLE_DOCTOR = 
 		"CREATE TABLE " + TABLE_DOCTOR + " (" +
 		PERSONNEL_ID + " INTEGER PRIMARY KEY NOT NULL , " +
-		LICENSE_NO	+ " NVARCHAR(10) UNIQUE, " +
+		LICENSE_NO	+ " NVARCHAR(10) UNIQUE NOT NULL, " +
 		DEPT_ID		+ " INTEGER NOT NULL, " +
 				//"REFERENCES " 	+ TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
 		NAME_LAST 	+ " NVARCHAR(20) NOT NULL, " +
 		NAME_FIRST 	+ " NVARCHAR(30) NOT NULL, " +
 		NAME_MIDDLE + " NVARCHAR(20) , " 		+
-		AUTH 		+ " NVARCHAR(45) UNIQUE, " 	+
-		ACCESS 		+ " NVARCHAR(45) UNIQUE, " 	+
+		AUTH 		+ " NVARCHAR(45) UNIQUE NOT NULL, " +
+		ACCESS 		+ " NVARCHAR(45) UNIQUE NOT NULL, " +
 		SEX 		+ " CHAR(1), " +
 		BIRTH 		+ " DATE, " +
-		URL 		+ " TEXT " 	+	" )";
+		URL 		+ " TEXT NOT NULL" 	+	" )";
 	
 	 static final String CREATE_TABLE_PATIENT = 
 		"CREATE TABLE " + TABLE_PATIENT + " ( " +
@@ -173,16 +174,17 @@ public class Data {
 		"CREATE TABLE " + TABLE_ENCOUNTER + "(" +
 		ENCOUNTER_ID	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		//LICENSE_NO 	+ " NVARCHAR(10) REFERENCES " + TABLE_DOCTOR + "(" + LICENSE_NO + ")" + ", "	+
-		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES " + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
-		PID 		+ " INTEGER REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
+		PERSONNEL_ID 	+ " INTEGER REFERENCES " + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
+		PID 		+ " INTEGER NOT NULL REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
 		PATIENT 	+ " NVARCHAR(20), " +
 		COMPLAINT 	+ " TEXT, " +
-		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " + ")";
+		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " + ", " + 
+		RELEASED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " +	")";
 	
 	 static final String CREATE_TABLE_REASON = 
 		"CREATE TABLE " + TABLE_REASON + "(" +
 		REASON_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		REASON 		+ " NVARCHAR(20) NOT NULL UNIQUE" 	+	")";
+		REASON 		+ " NVARCHAR(20) UNIQUE NOT NULL" 	+	")";
 	
 	 static final String CREATE_TABLE_REFERRAL = 
 		"CREATE TABLE " + TABLE_REFERRAL + "(" +

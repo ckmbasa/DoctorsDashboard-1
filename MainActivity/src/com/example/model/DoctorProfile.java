@@ -1,11 +1,8 @@
 /*
  ** Created by Jessie Emmanuel Adante
+
  ** Created on 4/24/14
  ** This class retrieves the doctor's name, username and password
- *
- ** Updated by Christian Joseph Dalisay
- ** Updated on 5/08/14
- ** Retrieves the token
  */
 
 package com.example.model;
@@ -19,8 +16,6 @@ public class DoctorProfile
 	private String doctor_first_name;
 	private String doctor_middle_name;
 	private String doctor_last_name;
-	private String authtoken;
-	private String accesstoken;
 	
 	public DoctorProfile()
 	{
@@ -31,8 +26,6 @@ public class DoctorProfile
 		doctor_first_name = "";
 		doctor_middle_name = "";
 		doctor_last_name = "";
-		this.authtoken = "";
-		this.accesstoken = "";
 	}
 	
 	public DoctorProfile(String personnelnumber, String locationnumber, String doctorname, String doctorpassword, String doctorfirstname, 
@@ -45,7 +38,6 @@ public class DoctorProfile
 		doctor_first_name = doctorfirstname;
 		doctor_middle_name = doctormiddlename;
 		doctor_last_name = doctorlastname;
-		
 	}
 	//temporary constructor
 	public DoctorProfile(String username, String password, String firstname, String lastname){
@@ -59,6 +51,12 @@ public class DoctorProfile
 		personnel_number = personnelnumber;
 		doctor_first_name = firstname;
 		doctor_last_name = lastname;
+	}
+	
+	//temporary constructor
+	public DoctorProfile(String username, String password){
+		doctor_username = username;
+		doctor_password = password;
 	}
 	
 	public void setPersonnelNumber(String personnelnumber)
@@ -131,36 +129,9 @@ public class DoctorProfile
 		return doctor_last_name;
 	}
 	
-	
 	public String toStringDoctorName()
 	{
 		return doctor_last_name + ", " + doctor_first_name + " " + doctor_middle_name;
 	}
-	
-	/*
-	 * Created by: Christian Joseph Dalisay
-	 * Created On: 05/08/14
-	 * The following constructor and methods are for the token(authentication and accessing) attributes.
-	 */
-	
-	public DoctorProfile(String rAuth,String rAccess) {
-		setAuthToken(rAuth);
-		setAccessToken(rAccess);
-	}
-	
-	public String getAccessToken() {
-		return this.accesstoken;
-	}
-	
-	public String getAuthToken() {
-		return this.authtoken;
-	}
-	
-	public void setAuthToken(String rAuth){
-		this.authtoken = rAuth;
-	}
-	
-	public void setAccessToken(String rAccess){
-		this.accesstoken = rAccess;
-	}	
+		
 }

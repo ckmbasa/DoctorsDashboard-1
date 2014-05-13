@@ -8,8 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".PatientInfo"
-    android:background="#e2e9ff" >
+    tools:context=".PatientInfo" >
 
     <GridLayout
         android:id="@+id/gridLayout1"
@@ -18,8 +17,8 @@
         android:layout_centerHorizontal="true"
         android:columnCount="2" >
 
-        <ScrollView
-            android:id="@+id/scrollView1"
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
@@ -27,196 +26,205 @@
             android:layout_marginTop="25dp"
             android:layout_row="0" >
 
-            <RelativeLayout
-                android:id="@+id/relativeLayout1"
+            <EditText
+                android:id="@+id/HRN"
                 android:layout_width="wrap_content"
-                android:layout_height="942dp" >
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView2"
+                android:layout_alignBottom="@+id/textView2"
+                android:layout_alignLeft="@+id/CaseNo"
+                android:layout_alignRight="@+id/CaseNo"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:clickable="false"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
 
-                <EditText
-                    android:id="@+id/FullName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/TextView02"
-                    android:layout_alignBottom="@+id/TextView02"
-                    android:layout_alignLeft="@+id/HRNEncounter"
-                    android:layout_alignParentRight="true"
-                    android:ems="10"
-                    android:inputType="number" />
+            <EditText
+                android:id="@+id/CaseNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/TextView01"
+                android:layout_alignBottom="@+id/TextView01"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/TextView02"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:clickable="false"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
 
-                <EditText
-                    android:id="@+id/Gender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/TextView05"
-                    android:layout_alignBottom="@+id/TextView05"
-                    android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@+id/TextView02"
-                    android:ems="10"
-                    android:inputType="number" />
+            <EditText
+                android:id="@+id/FullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/TextView02"
+                android:layout_alignBottom="@+id/TextView02"
+                android:layout_alignLeft="@+id/CaseNo"
+                android:layout_alignParentRight="true"
+                android:ems="10"
+                android:inputType="number"
+                android:clickable="false"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
 
-                <TextView
-                    android:id="@+id/TextView03"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/Address"
-                    android:layout_alignBottom="@+id/Address"
-                    android:layout_alignParentLeft="true"
-                    android:text="Address"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            <EditText
+                android:id="@+id/Gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/TextView05"
+                android:layout_alignBottom="@+id/TextView05"
+                android:layout_toLeftOf="@+id/HistOfDrinking"
+                android:layout_toRightOf="@+id/TextView02"
+                android:ems="10"
+                android:inputType="number"
+                android:clickable="false"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
 
-                <Button
-                    android:id="@+id/ReferPatientButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/SaveButton"
-                    android:layout_alignBottom="@+id/SaveButton"
-                    android:layout_alignParentRight="true"
-                    android:onClick="showReferPatient"
-                    android:text="Refer Patient" />
+            <Button
+                android:id="@+id/ReferPatientButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/SaveButton"
+                android:layout_alignBottom="@+id/SaveButton"
+                android:layout_alignParentRight="true"
+                android:onClick="showReferPatient"
+                android:text="Refer Patient" />
 
-                <Button
-                    android:id="@+id/SaveButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/TagPatientButton"
-                    android:layout_alignBottom="@+id/TagPatientButton"
-                    android:layout_alignParentLeft="true"
-                    android:text="Save" />
+            <Button
+                android:id="@+id/SaveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/TagPatientButton"
+                android:layout_alignBottom="@+id/TagPatientButton"
+                android:layout_alignParentLeft="true"
+                android:text="Save" />
 
-                <CheckBox
-                    android:id="@+id/HistOfDrinking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/HistOfSmoking"
-                    android:text="History of Drinking" />
+            <Button
+                android:id="@+id/TagPatientButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/HistOfDrinking"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/TextView02"
+                android:text="Tag Patient" />
 
-                <Button
-                    android:id="@+id/TagPatientButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/HistOfDrinking"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/TextView02"
-                    android:text="Tag Patient" />
+            <CheckBox
+                android:id="@+id/HistOfSmoking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/Age"
+                android:layout_marginTop="11dp"
+                android:text="History of Smoking" />
 
-                <EditText
-                    android:id="@+id/Age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/Gender"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/Gender"
-                    android:layout_marginTop="27dp"
-                    android:ems="10"
-                    android:inputType="number" >
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="14dp"
+                android:text="HRN"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <requestFocus />
-                </EditText>
+            <ListView
+                android:id="@+id/listView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView2"
+                android:layout_below="@+id/TagPatientButton"
+                android:orientation="vertical" >
+            </ListView>
 
-                <TextView
-                    android:id="@+id/TextView04"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/Age"
-                    android:layout_alignBottom="@+id/Age"
-                    android:layout_alignParentLeft="true"
-                    android:text="Age"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            <EditText
+                android:id="@+id/Address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/TextView02"
+                android:layout_toRightOf="@+id/TextView02"
+                android:ems="10"
+                android:inputType="number"
+                android:clickable="false"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
 
-                <CheckBox
-                    android:id="@+id/HistOfSmoking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/Age"
-                    android:layout_marginTop="11dp"
-                    android:text="History of Smoking" />
+            <TextView
+                android:id="@+id/TextView03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/Address"
+                android:layout_alignParentLeft="true"
+                android:text="Address"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="14dp"
-                    android:text="HRN"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/TextView05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/TextView03"
+                android:layout_marginTop="24dp"
+                android:text="Gender"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <EditText
-                    android:id="@+id/Address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/FullName"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/FullName"
-                    android:layout_marginTop="15dp"
-                    android:ems="10"
-                    android:inputType="number" />
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/CaseNo"
+                android:layout_marginTop="15dp"
+                android:text="Full Name"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <TextView
-                    android:id="@+id/TextView05"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/Address"
-                    android:layout_marginTop="47dp"
-                    android:text="Gender"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            <CheckBox
+                android:id="@+id/HistOfDrinking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/HistOfSmoking"
+                android:layout_alignBottom="@+id/HistOfSmoking"
+                android:layout_alignParentRight="true"
+                android:text="History of Drinking" />
 
-                <ListView
-                    android:id="@+id/listView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/TagPatientButton"
-                    android:layout_centerHorizontal="true" >
-                </ListView>
+            <TextView
+                android:id="@+id/TextView04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/Gender"
+                android:layout_alignBottom="@+id/Gender"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/HistOfSmoking"
+                android:text="Age"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <EditText
-                    android:id="@+id/HRN"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/textView2"
-                    android:layout_alignBottom="@+id/textView2"
-                    android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@+id/TextView02"
-                    android:ems="10"
-                    android:inputType="numberSigned" />
+            <EditText
+                android:id="@+id/Age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/Gender"
+                android:layout_alignBottom="@+id/Gender"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/TextView04"
+                android:ems="10"
+                android:inputType="number"
+                android:clickable="false"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
 
-                <TextView
-                    android:id="@+id/TextView01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/HRN"
-                    android:layout_marginTop="17dp"
-                    android:text="Case No."
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/HRN"
+                android:layout_marginTop="13dp"
+                android:text="Case No."
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <EditText
-                    android:id="@+id/HRNEncounter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/TextView01"
-                    android:layout_alignBottom="@+id/TextView01"
-                    android:layout_alignLeft="@+id/HRN"
-                    android:layout_alignParentRight="true"
-                    android:ems="10"
-                    android:inputType="number" />
-
-                <TextView
-                    android:id="@+id/TextView02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/HRNEncounter"
-                    android:layout_marginTop="22dp"
-                    android:text="Full Name"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            </RelativeLayout>
-
-        </ScrollView>
+        </RelativeLayout>
     </GridLayout>
 
     <TextView

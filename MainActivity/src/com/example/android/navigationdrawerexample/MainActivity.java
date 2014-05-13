@@ -42,6 +42,11 @@ public class MainActivity extends BaseActivity {
     	startActivity(intent);
     }
     
+    public void showCanvassActivity(View view){
+    	Intent intent = new Intent(this, CanvassActivity.class);
+    	startActivity(intent);
+    }
+    
 }
 
 // Test comment for commit
